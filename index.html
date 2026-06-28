@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Venezuela en Pie — Terremoto 24 de Junio 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:ital,wght@0,400;0,600;0,700;0,800;1,400&family=Source+Serif+4:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #110E0C;
+  --paper: #F5F1E8;
+  --alert: #D12020;
+  --alert2: #FF4444;
+  --alert-dark: #8C1212;
+  --rubble: #7A6245;
+  --hope: #1A6640;
+  --gold: #C9902A;
+  --line: rgba(17,14,12,0.13);
+  --muted: #6A6059;
+  --nequi: #5E0F96;
+  --nequi2: #9B3FD4;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;font-size:16px;}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:'Archivo',sans-serif;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;}
+  .reveal,.reveal-fast{opacity:1!important;transform:none!important;}
+}
+a{color:var(--alert-dark);}
+.wrap{max-width:980px;margin:0 auto;padding:0 clamp(16px,4vw,36px);}
+
+/* ═══════════════════════ ANIMATIONS ═══════════════════════ */
+@keyframes rise{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+@keyframes fade{from{opacity:0;}to{opacity:1;}}
+@keyframes pulse-dot{0%,100%{box-shadow:0 0 0 0 rgba(209,32,32,.55);}50%{box-shadow:0 0 0 9px rgba(209,32,32,0);}}
+@keyframes draw-line{to{stroke-dashoffset:0;}}
+@keyframes shimmer{0%{background-position:-200% center;}100%{background-position:200% center;}}
+@keyframes float{0%,100%{transform:translateY(0) rotate(-1deg);}50%{transform:translateY(-9px) rotate(1deg);}}
+@keyframes glow-nequi{0%,100%{box-shadow:0 0 0 0 rgba(94,15,150,.25),0 12px 48px rgba(94,15,150,.22);}50%{box-shadow:0 0 0 18px transparent,0 20px 64px rgba(94,15,150,.38);}}
+@keyframes heartbeat{0%,100%{transform:scale(1);}15%{transform:scale(1.2);}30%{transform:scale(1);}45%{transform:scale(1.13);}60%{transform:scale(1);}}
+@keyframes wave{0%,100%{transform:scaleY(1);}50%{transform:scaleY(.3);}}
+@keyframes ticker-scroll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+@keyframes count-pop{from{opacity:0;transform:scale(.6);}to{opacity:1;transform:scale(1);}}
+@keyframes underline-in{to{background-size:100% 4px;}}
+@keyframes crack-grow{from{stroke-dashoffset:400;}to{stroke-dashoffset:0;}}
+@keyframes rubble-fall{0%{opacity:0;transform:translateY(-30px) rotate(-15deg);}100%{opacity:1;transform:translateY(0) rotate(0deg);}}
+
+/* QUAKE SHUDDER */
+@keyframes quake{
+  0%  {transform:translate(0,0)rotate(0);}
+  8%  {transform:translate(-4px,2px)rotate(-.3deg);}
+  16% {transform:translate(5px,-3px)rotate(.2deg);}
+  24% {transform:translate(-5px,1px)rotate(-.2deg);}
+  32% {transform:translate(4px,3px)rotate(.3deg);}
+  40% {transform:translate(-3px,-4px)rotate(-.2deg);}
+  48% {transform:translate(4px,1px)rotate(.2deg);}
+  56% {transform:translate(-3px,3px)rotate(-.1deg);}
+  64% {transform:translate(3px,-2px)rotate(.1deg);}
+  80% {transform:translate(-1px,1px)rotate(0);}
+  100%{transform:translate(0,0)rotate(0);}
+}
+.quake-active{animation:quake .75s cubic-bezier(.36,.07,.19,.97) both;}
+
+/* CRACK SVG */
+@keyframes crack-flash{0%{opacity:0;}10%{opacity:1;}30%{opacity:.7;}100%{opacity:.45;}}
+
+/* SCROLL REVEAL */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .75s cubic-bezier(.16,.84,.44,1),transform .75s cubic-bezier(.16,.84,.44,1);}
+.reveal.in{opacity:1;transform:none;}
+.reveal-fast{opacity:0;transform:translateY(14px);transition:opacity .45s ease,transform .45s ease;}
+.reveal-fast.in{opacity:1;transform:none;}
+
+/* stagger children */
+.stagger-children.in > *:nth-child(1){transition-delay:.04s;}
+.stagger-children.in > *:nth-child(2){transition-delay:.12s;}
+.stagger-children.in > *:nth-child(3){transition-delay:.20s;}
+.stagger-children.in > *:nth-child(4){transition-delay:.28s;}
+.stagger-children.in > *:nth-child(5){transition-delay:.36s;}
+.stagger-children.in > *:nth-child(6){transition-delay:.44s;}
+
+/* ═══════════════════════ TICKER ═══════════════════════ */
+.ticker{background:var(--ink);color:var(--paper);overflow:hidden;white-space:nowrap;border-bottom:2px solid var(--alert);font-size:12px;letter-spacing:.045em;position:relative;z-index:100;}
+.ticker-inner{display:inline-block;padding:9px 0;animation:ticker-scroll 36s linear infinite;}
+.ticker-inner:hover{animation-play-state:paused;}
+.ticker b{margin-right:40px;font-weight:700;}
+.ticker .dot{color:var(--alert);margin-right:40px;font-size:14px;}
+
+/* ═══════════════════════ HEADER ═══════════════════════ */
+header{
+  position:relative;
+  border-bottom:3px solid var(--ink);
+  padding:clamp(44px,7vw,80px) 0 clamp(36px,5vw,60px);
+  overflow:hidden;
+  z-index:2;
+}
+header::before{
+  content:'';
+  position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 60% 80% at 90% 50%,rgba(209,32,32,.05) 0%,transparent 70%),
+    url("data:image/svg+xml,%3Csvg width='48' height='48' viewBox='0 0 48 48' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h48v48H0z' fill='none'/%3E%3Cpath d='M0 24h48M24 0v48' stroke='%231A1614' stroke-opacity='.04' stroke-width='1'/%3E%3C/svg%3E");
+  pointer-events:none;
+}
+
+/* crack SVG overlay */
+.crack-svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1;}
+.crack-path{
+  fill:none;stroke:rgba(209,32,32,.35);stroke-width:1.5;stroke-linecap:round;
+  stroke-dasharray:400;stroke-dashoffset:400;
+  animation:crack-grow 1.8s ease-out 1s forwards, crack-flash .8s ease-out 1s both;
+}
+
+.eyebrow{
+  position:relative;z-index:2;
+  display:flex;align-items:center;gap:10px;
+  font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--alert-dark);margin-bottom:20px;
+  opacity:0;animation:rise .6s ease .05s forwards;
+}
+.eyebrow::before{content:'';width:10px;height:10px;border-radius:50%;background:var(--alert);animation:pulse-dot 1.5s ease-in-out infinite;flex-shrink:0;}
+
+h1{
+  position:relative;z-index:2;
+  font-family:'Archivo Black',sans-serif;
+  font-size:clamp(34px,6.8vw,78px);
+  line-height:1.01;letter-spacing:-.025em;
+  margin-bottom:22px;
+  opacity:0;animation:rise .9s cubic-bezier(.16,.84,.44,1) .15s forwards;
+}
+h1 .accent{
+  color:var(--alert-dark);
+  background-image:linear-gradient(var(--alert),var(--alert));
+  background-size:0% 4px;background-repeat:no-repeat;background-position:0 100%;
+  padding-bottom:6px;
+  animation:underline-in 1.2s ease-out 1.3s forwards;
+}
+
+.sub{
+  position:relative;z-index:2;
+  font-family:'Source Serif 4',serif;font-style:italic;
+  font-size:clamp(16px,2.3vw,20px);line-height:1.65;
+  max-width:640px;color:#3A3631;
+  opacity:0;animation:rise .85s ease .35s forwards;
+}
+
+/* SEISMOGRAM */
+.seismo-wrap{
+  position:relative;z-index:2;
+  margin-top:clamp(28px,4vw,48px);
+  height:clamp(56px,8vw,80px);
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+}
+.seismo-wrap svg{display:block;width:100%;height:100%;}
+.seismo-bg{fill:none;stroke:rgba(209,32,32,.12);stroke-width:1;}
+.seismo-line{
+  fill:none;stroke:var(--alert);stroke-width:2;stroke-linecap:round;
+  stroke-dasharray:3000;stroke-dashoffset:3000;
+  filter:drop-shadow(0 0 5px rgba(209,32,32,.6));
+  animation:draw-line 3s cubic-bezier(.4,0,.2,1) .5s forwards;
+}
+.seismo-label{
+  position:absolute;top:50%;right:0;transform:translateY(-50%);
+  font-size:10px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--alert);background:var(--paper);padding:2px 8px;
+  opacity:0;animation:fade .4s ease 3.4s forwards;
+}
+
+/* STAT ROW */
+.stat-row{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  margin-top:clamp(20px,3vw,36px);border-top:1px solid var(--line);
+}
+@media(max-width:600px){.stat-row{grid-template-columns:repeat(2,1fr);}}
+.stat{
+  padding:clamp(14px,2.5vw,22px) 14px clamp(10px,1.5vw,14px) 0;
+  border-right:1px solid var(--line);
+  transition:transform .3s;cursor:default;
+}
+.stat:last-child{border-right:none;}
+.stat:hover{transform:translateY(-4px);}
+.stat .num{
+  font-family:'Archivo Black',sans-serif;
+  font-size:clamp(22px,3.5vw,40px);
+  display:block;transition:color .25s;
+  animation:count-pop .6s ease both;
+}
+.stat:hover .num{color:var(--alert-dark);}
+.stat .num.red{color:var(--alert-dark);}
+.stat .label{font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);font-weight:700;}
+
+.figures-note{font-size:12.5px;color:var(--muted);margin-top:16px;border-left:3px solid var(--rubble);padding-left:12px;font-style:italic;position:relative;z-index:2;}
+
+/* ═══════════════════════ SECTIONS ═══════════════════════ */
+section{padding:clamp(48px,7vw,80px) 0;position:relative;z-index:2;}
+.rule-top{border-top:1px solid var(--line);}
+
+.kicker{display:flex;align-items:baseline;gap:14px;margin-bottom:clamp(22px,3vw,36px);flex-wrap:wrap;}
+.kicker .tag{
+  font-family:'Archivo Black',sans-serif;font-size:11.5px;letter-spacing:.1em;
+  background:var(--ink);color:var(--paper);padding:5px 12px;text-transform:uppercase;flex-shrink:0;
+}
+.kicker h2{font-size:clamp(20px,3.2vw,32px);margin:0;font-weight:800;line-height:1.1;}
+p{line-height:1.7;font-size:clamp(14.5px,2vw,16px);color:#262421;}
+p+p{margin-top:14px;}
+.lede{font-size:clamp(16px,2.3vw,19px);max-width:680px;line-height:1.65;}
+blockquote{
+  font-family:'Source Serif 4',serif;font-style:italic;
+  font-size:clamp(17px,2.5vw,20px);
+  border-left:4px solid var(--alert);margin:28px 0;padding:8px 0 8px 22px;
+  color:#3A3631;line-height:1.55;
+}
+
+/* ═══════════════════════ EARTHQUAKE METER ═══════════════════════ */
+.quake-meter-section{
+  background:var(--ink);
+  color:var(--paper);
+  padding:clamp(40px,6vw,72px) 0;
+  position:relative;overflow:hidden;z-index:2;
+}
+.quake-meter-section::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 70% 100% at 50% 50%,rgba(209,32,32,.07) 0%,transparent 70%);
+  pointer-events:none;
+}
+.meter-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,4vw,56px);align-items:center;margin-top:36px;}
+@media(max-width:700px){.meter-grid{grid-template-columns:1fr;}}
+
+.richter-dial{
+  position:relative;width:100%;max-width:320px;margin:0 auto;
+  aspect-ratio:1;
+}
+.richter-dial svg{width:100%;height:100%;}
+.dial-needle{
+  transform-origin:50% 85%;
+  animation:needle-sweep 2.2s cubic-bezier(.34,1.56,.64,1) 1.2s both;
+}
+@keyframes needle-sweep{
+  from{transform:rotate(-90deg);}
+  to{transform:rotate(52deg);}
+}
+.dial-value{
+  position:absolute;bottom:22%;left:50%;transform:translateX(-50%);
+  font-family:'Archivo Black',sans-serif;font-size:clamp(28px,5vw,48px);
+  color:var(--alert2);text-shadow:0 0 24px rgba(255,68,68,.5);
+  animation:count-pop .5s ease 3s both;
+}
+.dial-unit{font-size:.45em;color:rgba(255,255,255,.6);vertical-align:top;margin-top:.3em;display:inline-block;}
+
+.timeline{display:flex;flex-direction:column;gap:0;}
+.tl-item{
+  display:grid;grid-template-columns:80px 1fr;gap:16px;
+  padding:18px 0;border-bottom:1px solid rgba(245,241,234,.1);
+  transition:background .2s;
+}
+.tl-item:hover{background:rgba(255,255,255,.03);}
+.tl-item:last-child{border-bottom:none;}
+.tl-time{font-family:'Archivo Black',sans-serif;font-size:clamp(12px,2vw,14px);color:var(--alert2);letter-spacing:.04em;line-height:1.3;}
+.tl-text strong{display:block;font-size:clamp(13px,2vw,15px);color:var(--paper);margin-bottom:3px;}
+.tl-text span{font-size:clamp(12px,1.8vw,13.5px);color:rgba(245,241,234,.55);line-height:1.45;}
+
+/* LIVE COUNTER */
+.live-counter-bar{
+  margin-top:clamp(28px,4vw,48px);
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:1px;background:rgba(245,241,234,.1);
+  border:1px solid rgba(245,241,234,.1);
+}
+@media(max-width:500px){.live-counter-bar{grid-template-columns:1fr;}}
+.lc-cell{
+  padding:clamp(16px,3vw,24px) clamp(14px,2.5vw,20px);
+  background:rgba(17,14,12,.4);text-align:center;
+}
+.lc-num{
+  font-family:'Archivo Black',sans-serif;
+  font-size:clamp(24px,4vw,42px);
+  background:linear-gradient(90deg,#fff 0%,var(--alert2) 50%,#fff 100%);
+  background-size:200% auto;
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  animation:shimmer 4s linear infinite;
+  display:block;margin-bottom:4px;
+}
+.lc-label{font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:rgba(245,241,234,.5);}
+
+/* ═══════════════════════ WHAT HAPPENED ═══════════════════════ */
+.what-happened{background:var(--paper);}
+
+/* AFFECTED MAP — simplified visual */
+.affected-visual{
+  margin-top:clamp(24px,3.5vw,40px);
+  background:linear-gradient(135deg,#F0EBE0,#E8E0D0);
+  border:1px solid var(--line);
+  padding:clamp(20px,3vw,36px);
+  display:grid;grid-template-columns:1fr 1fr;gap:clamp(16px,3vw,32px);
+  align-items:center;
+}
+@media(max-width:640px){.affected-visual{grid-template-columns:1fr;}}
+.affected-states{display:flex;flex-direction:column;gap:10px;}
+.state-bar-wrap{display:flex;flex-direction:column;gap:5px;}
+.state-name{font-size:12.5px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;display:flex;justify-content:space-between;}
+.state-name span{color:var(--muted);font-weight:400;letter-spacing:0;text-transform:none;}
+.state-bar{height:6px;background:rgba(17,14,12,.1);border-radius:3px;overflow:hidden;}
+.state-fill{height:100%;border-radius:3px;background:var(--alert);transition:width 1.2s cubic-bezier(.16,.84,.44,1);}
+.state-fill.gold{background:var(--gold);}
+.state-fill.rubble{background:var(--rubble);}
+.epicenter-box{text-align:center;padding:clamp(16px,3vw,28px);border:1px solid var(--line);}
+.epicenter-icon{font-size:clamp(48px,8vw,80px);display:block;animation:float 5s ease-in-out infinite;}
+.epicenter-label{font-family:'Archivo Black',sans-serif;font-size:clamp(14px,2.5vw,18px);margin-top:10px;display:block;}
+.epicenter-sub{font-size:12.5px;color:var(--muted);margin-top:4px;display:block;}
+
+/* ═══════════════════════ NEEDS ═══════════════════════ */
+.needs-section{
+  background:linear-gradient(135deg,#110E0C 0%,#1E1612 100%);
+  color:var(--paper);
+  padding:clamp(48px,7vw,80px) 0;
+  position:relative;overflow:hidden;z-index:2;
+}
+.needs-section::after{
+  content:'';position:absolute;top:-30%;right:-10%;
+  width:min(500px,80vw);height:min(500px,80vw);border-radius:50%;
+  background:radial-gradient(circle,rgba(201,144,42,.07) 0%,transparent 70%);
+  pointer-events:none;
+}
+.needs-section .kicker .tag{background:var(--gold);color:var(--ink);}
+.needs-section .kicker h2{color:var(--paper);}
+.needs-section .lede{color:rgba(245,241,234,.7);}
+
+.needs-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:clamp(10px,2vw,16px);
+  margin-top:clamp(24px,3.5vw,40px);
+}
+@media(max-width:700px){.needs-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:420px){.needs-grid{grid-template-columns:1fr;}}
+
+.need-card{
+  border:1px solid rgba(245,241,234,.12);
+  padding:clamp(16px,3vw,24px) clamp(14px,2.5vw,20px);
+  display:flex;flex-direction:column;gap:8px;
+  transition:border-color .25s,background .25s,transform .3s;
+  opacity:0;transform:translateY(20px);
+  transition:opacity .5s ease,transform .5s ease,border-color .25s,background .25s;
+}
+.need-card.in{opacity:1;transform:none;}
+.need-card:hover{border-color:var(--gold);background:rgba(201,144,42,.07);transform:translateY(-5px);}
+.need-icon{font-size:clamp(24px,4vw,34px);animation:float 4s ease-in-out infinite;}
+.need-name{font-weight:800;font-size:clamp(13px,2vw,15px);color:var(--paper);}
+.need-desc{font-size:clamp(12px,1.8vw,13.5px);color:rgba(245,241,234,.5);line-height:1.5;}
+.need-urgency{font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--gold);margin-top:4px;}
+
+/* PROGRESS BAR */
+.collection-bar-wrap{
+  margin-top:clamp(28px,4vw,48px);
+  background:rgba(245,241,234,.06);
+  border:1px solid rgba(245,241,234,.12);
+  padding:clamp(20px,3vw,32px);
+}
+.cb-header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px;flex-wrap:wrap;gap:8px;}
+.cb-title{font-weight:800;font-size:clamp(14px,2.2vw,16px);color:var(--paper);}
+.cb-pct{font-family:'Archivo Black',sans-serif;font-size:clamp(22px,4vw,32px);color:var(--gold);}
+.cb-track{height:10px;background:rgba(245,241,234,.1);border-radius:5px;overflow:hidden;}
+.cb-fill{height:100%;border-radius:5px;background:linear-gradient(90deg,var(--gold),#F0B84A);width:0;transition:width 2s cubic-bezier(.16,.84,.44,1);}
+.cb-labels{display:flex;justify-content:space-between;margin-top:8px;font-size:12px;color:rgba(245,241,234,.4);}
+
+/* ═══════════════════════ DONATE SECTION ═══════════════════════ */
+.donate-section{background:var(--paper);padding:clamp(56px,8vw,100px) 0;}
+.donate-inner{display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,5vw,64px);align-items:start;}
+@media(max-width:720px){.donate-inner{grid-template-columns:1fr;}}
+
+.donate-steps{margin-top:clamp(20px,3vw,32px);display:flex;flex-direction:column;gap:0;}
+.donate-step{
+  display:grid;grid-template-columns:40px 1fr;gap:14px;
+  padding:clamp(14px,2.5vw,20px) 0;border-bottom:1px solid var(--line);
+  transition:background .2s;
+}
+.donate-step:hover{background:rgba(94,15,150,.04);}
+.donate-step:last-child{border-bottom:none;}
+.step-num{font-family:'Archivo Black',sans-serif;font-size:clamp(18px,3vw,22px);color:var(--nequi);line-height:1.2;}
+.step-text strong{display:block;margin-bottom:3px;font-size:clamp(13.5px,2vw,15.5px);}
+.step-text span{font-size:clamp(12px,1.8vw,13.5px);color:var(--muted);line-height:1.5;}
+
+/* NEQUI CARD */
+.nequi-card{
+  background:linear-gradient(145deg,#3A0560 0%,#5E0F96 45%,#9B3FD4 100%);
+  border-radius:24px;
+  padding:clamp(24px,4vw,40px) clamp(20px,3.5vw,36px);
+  color:white;
+  position:relative;overflow:hidden;
+  box-shadow:0 24px 72px rgba(94,15,150,.38),0 4px 20px rgba(0,0,0,.22);
+  animation:glow-nequi 3.5s ease-in-out infinite;
+  transition:transform .3s ease;
+}
+.nequi-card:hover{transform:translateY(-7px) scale(1.012);}
+.nequi-card::before{content:'';position:absolute;top:-30%;right:-15%;width:250px;height:250px;border-radius:50%;background:rgba(255,255,255,.08);pointer-events:none;}
+.nequi-card::after{content:'';position:absolute;bottom:-25%;left:-12%;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.05);pointer-events:none;}
+
+.nequi-top{display:flex;align-items:center;gap:12px;margin-bottom:clamp(20px,3vw,30px);}
+.nequi-badge{width:46px;height:46px;border-radius:50%;background:white;display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:0 4px 14px rgba(0,0,0,.25);flex-shrink:0;}
+.nequi-wordmark{font-family:'Archivo Black',sans-serif;font-size:clamp(18px,3vw,24px);letter-spacing:.03em;text-shadow:0 2px 8px rgba(0,0,0,.2);}
+.nequi-chip{margin-left:auto;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:20px;padding:3px 10px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;flex-shrink:0;}
+
+.nequi-label{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:6px;}
+.nequi-holder{font-size:clamp(15px,2.5vw,18px);font-weight:700;margin-bottom:2px;}
+.nequi-number{
+  font-family:'Archivo Black',sans-serif;
+  font-size:clamp(26px,5vw,40px);letter-spacing:.07em;
+  background:linear-gradient(90deg,#fff 0%,#DDB8FF 50%,#fff 100%);
+  background-size:200% auto;
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  animation:shimmer 3.5s linear infinite;
+  margin:clamp(8px,1.5vw,12px) 0;
+  line-height:1.1;
+}
+.nequi-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.nequi-btn{
+  background:rgba(255,255,255,.18);border:1.5px solid rgba(255,255,255,.32);
+  color:white;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;
+  padding:9px 18px;cursor:pointer;border-radius:6px;
+  transition:background .2s,transform .15s;font-family:'Archivo',sans-serif;
+  display:flex;align-items:center;gap:6px;
+}
+.nequi-btn:hover{background:rgba(255,255,255,.28);transform:scale(1.04);}
+.nequi-btn:active{transform:scale(.96);}
+.copy-ok{font-size:12px;color:rgba(255,255,255,.8);opacity:0;transition:opacity .3s;display:flex;align-items:center;gap:4px;}
+.copy-ok.show{opacity:1;}
+
+.nequi-hr{border:none;border-top:1px solid rgba(255,255,255,.15);margin:clamp(18px,2.5vw,26px) 0;}
+.nequi-pills-label{font-size:11px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:10px;}
+.nequi-pills{display:flex;flex-wrap:wrap;gap:8px;}
+.pill{
+  background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);
+  border-radius:30px;padding:clamp(4px,1vw,6px) clamp(10px,2vw,14px);
+  font-size:clamp(11px,1.8vw,13px);font-weight:600;color:rgba(255,255,255,.9);
+  display:flex;align-items:center;gap:5px;
+}
+.nequi-heart{text-align:center;font-size:clamp(24px,4vw,32px);animation:heartbeat 2.2s ease-in-out infinite;display:block;margin-top:clamp(14px,2vw,22px);}
+.nequi-footer-note{font-size:clamp(11.5px,1.8vw,13px);color:var(--muted);margin-top:14px;line-height:1.55;text-align:center;}
+
+/* ═══════════════════════ HOW TO HELP ═══════════════════════ */
+.help-section{
+  background:linear-gradient(135deg,#110E0C 0%,#1E1410 100%);
+  color:var(--paper);
+  padding:clamp(48px,7vw,80px) 0;
+  position:relative;overflow:hidden;z-index:2;
+}
+.help-section .kicker .tag{background:var(--alert);color:white;}
+.help-section .kicker h2{color:var(--paper);}
+.help-section .lede{color:rgba(245,241,234,.7);}
+.help-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(10px,2vw,16px);margin-top:clamp(24px,3.5vw,40px);}
+@media(max-width:580px){.help-grid{grid-template-columns:1fr;}}
+.org-card{
+  border:1px solid rgba(245,241,234,.14);padding:clamp(18px,3vw,24px);
+  display:flex;flex-direction:column;gap:8px;
+  transition:border-color .25s,background .25s,transform .3s;
+}
+.org-card:hover{border-color:var(--alert);background:rgba(209,32,32,.08);transform:translateY(-5px);}
+.org-name{font-weight:800;font-size:clamp(13.5px,2.2vw,16px);color:var(--paper);}
+.org-desc{font-size:clamp(12px,1.8vw,13.5px);color:rgba(245,241,234,.5);line-height:1.5;}
+.org-cta{
+  font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;
+  color:var(--paper);border-bottom:2px solid var(--alert);text-decoration:none;
+  padding-bottom:2px;margin-top:4px;align-self:flex-start;transition:color .2s;
+}
+.org-cta:hover{color:var(--alert);}
+.warning-box{
+  margin-top:clamp(24px,3.5vw,36px);
+  border:1px dashed rgba(245,241,234,.28);
+  padding:clamp(14px,2.5vw,20px) clamp(16px,3vw,22px);
+  font-size:clamp(13px,1.9vw,14.5px);color:#E0C8C8;
+  display:flex;gap:12px;line-height:1.55;
+  align-items:flex-start;
+}
+
+/* ═══════════════════════ GALLERY ═══════════════════════ */
+.gallery-section{background:var(--paper);}
+.gallery-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(12px,2vw,20px);}
+@media(max-width:560px){.gallery-grid{grid-template-columns:1fr;}}
+.photo-slot{
+  border:2px dashed var(--rubble);
+  background:repeating-linear-gradient(135deg,rgba(122,98,69,.06) 0 10px,transparent 10px 20px);
+  aspect-ratio:4/3;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:clamp(16px,3vw,28px);gap:10px;
+  transition:border-color .3s,box-shadow .3s;
+}
+.photo-slot:hover{border-color:var(--alert-dark);box-shadow:0 8px 28px rgba(209,32,32,.1);}
+.photo-slot.wide{grid-column:1/-1;aspect-ratio:16/7;}
+.photo-icon{font-size:clamp(20px,4vw,28px);opacity:.4;}
+.photo-instruction{font-size:10.5px;text-transform:uppercase;letter-spacing:.07em;color:var(--rubble);font-weight:800;}
+.photo-caption{font-family:'Source Serif 4',serif;font-style:italic;font-size:clamp(12.5px,2vw,14.5px);color:#52483B;max-width:90%;line-height:1.5;}
+
+/* ═══════════════════════ SAFETY ═══════════════════════ */
+.safety-section{background:var(--paper);}
+.safety-grid{
+  display:grid;grid-template-columns:repeat(2,1fr);
+  gap:clamp(12px,2vw,16px);margin-top:clamp(22px,3vw,36px);
+}
+@media(max-width:580px){.safety-grid{grid-template-columns:1fr;}}
+.safety-card{
+  border:1px solid var(--line);padding:clamp(16px,3vw,24px);
+  display:grid;grid-template-columns:38px 1fr;gap:14px;align-items:start;
+  transition:box-shadow .25s,transform .25s,background .25s;
+}
+.safety-card:hover{box-shadow:0 6px 20px rgba(17,14,12,.08);transform:translateY(-3px);background:rgba(30,102,64,.04);}
+.safety-ico{font-family:'Archivo Black',sans-serif;color:var(--hope);font-size:clamp(17px,2.8vw,22px);line-height:1.3;}
+.safety-card strong{display:block;margin-bottom:3px;font-size:clamp(13px,2vw,15px);}
+.safety-card p{margin:0;font-size:clamp(12px,1.8vw,13.5px);color:#4A453E;}
+
+/* ═══════════════════════ WAVE DIVIDER ═══════════════════════ */
+.wave-div{display:flex;align-items:center;justify-content:center;gap:3px;padding:clamp(18px,3vw,28px) 0;background:var(--paper);border-top:1px solid var(--line);border-bottom:1px solid var(--line);overflow:hidden;}
+.wb{width:3px;border-radius:2px;background:var(--alert);animation:wave 1.4s ease-in-out infinite;}
+.wb:nth-child(1){height:8px;animation-delay:0s;}
+.wb:nth-child(2){height:14px;animation-delay:.08s;}
+.wb:nth-child(3){height:22px;animation-delay:.16s;}
+.wb:nth-child(4){height:34px;animation-delay:.24s;}
+.wb:nth-child(5){height:48px;animation-delay:.32s;}
+.wb:nth-child(6){height:60px;animation-delay:.40s;}
+.wb:nth-child(7){height:48px;animation-delay:.48s;}
+.wb:nth-child(8){height:34px;animation-delay:.56s;}
+.wb:nth-child(9){height:22px;animation-delay:.64s;}
+.wb:nth-child(10){height:14px;animation-delay:.72s;}
+.wb:nth-child(11){height:8px;animation-delay:.80s;}
+
+/* ═══════════════════════ FOOTER ═══════════════════════ */
+footer{border-top:3px solid var(--ink);padding:clamp(36px,5vw,56px) 0 clamp(44px,6vw,72px);text-align:center;background:var(--paper);position:relative;z-index:2;}
+.footer-closing{font-family:'Archivo Black',sans-serif;font-size:clamp(20px,3.5vw,32px);margin-bottom:10px;line-height:1.2;}
+.footer-closing .accent{color:var(--alert-dark);}
+footer .sub-line{max-width:480px;margin:0 auto;font-size:clamp(13.5px,2vw,15.5px);color:#4A453E;}
+footer .credits{margin-top:28px;display:flex;justify-content:center;align-items:center;gap:8px;font-size:clamp(12px,1.8vw,13.5px);color:var(--muted);flex-wrap:wrap;}
+footer .credits span{color:var(--alert);font-size:16px;}
+footer .fine{font-size:clamp(11px,1.6vw,12.5px);color:#9A9089;margin-top:18px;}
+
+/* BACK TO TOP */
+.back-top{
+  display:inline-flex;align-items:center;gap:6px;
+  margin-top:22px;font-size:12px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;
+  color:var(--muted);text-decoration:none;border-bottom:1px solid var(--line);padding-bottom:2px;
+  transition:color .2s,border-color .2s;
+}
+.back-top:hover{color:var(--alert-dark);border-color:var(--alert);}
+
+/* ═══════════════════════ STICKY DONATE CTA ═══════════════════════ */
+.sticky-cta{
+  position:fixed;bottom:clamp(14px,3vw,24px);right:clamp(14px,3vw,24px);
+  z-index:999;
+  background:linear-gradient(135deg,var(--nequi),var(--nequi2));
+  color:white;
+  padding:clamp(10px,2vw,14px) clamp(16px,3vw,24px);
+  font-weight:800;font-size:clamp(12.5px,1.9vw,14px);letter-spacing:.04em;
+  text-decoration:none;
+  box-shadow:0 8px 28px rgba(94,15,150,.45),0 2px 8px rgba(0,0,0,.2);
+  display:flex;align-items:center;gap:8px;
+  transform:translateY(80px);opacity:0;
+  transition:transform .5s cubic-bezier(.16,.84,.44,1),opacity .5s ease,box-shadow .2s;
+}
+.sticky-cta.show{transform:translateY(0);opacity:1;}
+.sticky-cta:hover{box-shadow:0 14px 40px rgba(94,15,150,.6);color:white;}
+.sticky-cta .cta-heart{animation:heartbeat 2s ease-in-out infinite;display:inline-block;}
+
+/* ═══════════════════════ RESPONSIVE FINE TUNING ═══════════════════════ */
+@media(max-width:480px){
+  .kicker{gap:8px;}
+  .donate-inner .nequi-footer-note{font-size:12px;}
+  .live-counter-bar{gap:0;}
+}
+</style>
+</head>
+<body>
+
+<!-- STICKY CTA -->
+<a class="sticky-cta" href="#donar" id="sticky-cta" aria-label="Ir a donar">
+  <span class="cta-heart">💜</span> Donar por Nequi
+</a>
+
+<!-- TICKER -->
+<div class="ticker" role="status" aria-label="Actualizaciones">
+  <div class="ticker-inner">
+    <span class="dot">●</span><b>EMERGENCIA NACIONAL ACTIVA — VENEZUELA</b>
+    <span class="dot">●</span><b>MAGNITUD 7.2 Y 7.5 — 24 JUNIO 2026</b>
+    <span class="dot">●</span><b>RÉPLICAS CONTINÚAN EN ZONA CENTRO-NORTE</b>
+    <span class="dot">●</span><b>16+ PAÍSES CON EQUIPOS EN TERRENO</b>
+    <span class="dot">●</span><b>HOSPITALES DESBORDADOS — SE NECESITA APOYO YA</b>
+    <span class="dot">●</span><b>DONACIONES ABIERTAS — NÚMERO NEQUI EN ESTA PÁGINA</b>
+    <span class="dot">●</span><b>EMERGENCIA NACIONAL ACTIVA — VENEZUELA</b>
+    <span class="dot">●</span><b>MAGNITUD 7.2 Y 7.5 — 24 JUNIO 2026</b>
+    <span class="dot">●</span><b>RÉPLICAS CONTINÚAN EN ZONA CENTRO-NORTE</b>
+    <span class="dot">●</span><b>16+ PAÍSES CON EQUIPOS EN TERRENO</b>
+    <span class="dot">●</span><b>HOSPITALES DESBORDADOS — SE NECESITA APOYO YA</b>
+    <span class="dot">●</span><b>DONACIONES ABIERTAS — NÚMERO NEQUI EN ESTA PÁGINA</b>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header id="site-header">
+  <!-- Crack SVG overlay -->
+  <svg class="crack-svg" viewBox="0 0 1200 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <path class="crack-path" d="M600,0 L580,40 L610,80 L570,130 L600,180 L555,240 L590,290 L560,400" style="animation-delay:1s;"/>
+    <path class="crack-path" d="M610,80 L660,110 L640,150" style="animation-delay:1.3s;stroke-dasharray:200;stroke-dashoffset:200;"/>
+    <path class="crack-path" d="M570,130 L520,155 L540,190" style="animation-delay:1.5s;stroke-dasharray:160;stroke-dashoffset:160;"/>
+  </svg>
+
+  <div class="wrap">
+    <div class="eyebrow">24 de junio de 2026 — Yaracuy, Venezuela</div>
+    <h1>Venezuela<br><span class="accent">tiembla, pero no se rinde.</span></h1>
+    <p class="sub">Dos terremotos de magnitud 7.2 y 7.5, separados por solo 39 segundos, sacudieron el centro-norte del país. Miles de familias lo perdieron todo en instantes. Esto es lo que pasó, y cómo desde Colombia podemos ayudar ahora.</p>
+
+    <div class="seismo-wrap" aria-hidden="true">
+      <svg viewBox="0 0 1200 80" preserveAspectRatio="none">
+        <polyline class="seismo-bg" points="0,40 1200,40"/>
+        <polyline class="seismo-line" points="
+          0,40 50,40 70,38 90,42 115,39 140,40 165,40
+          180,6 188,74 196,10 204,58 212,40 230,40 255,40 278,40
+          295,40 310,5 318,75 326,8 334,60 342,40 358,40 380,40 405,40 428,40
+          445,40 462,4 470,76 478,10 486,60 494,40 510,40 535,40 558,41 580,39 600,40
+          625,40 650,40 672,40 695,40 718,40 740,40 762,40 785,40 808,40 832,40
+          855,40 878,40 902,40 925,40 948,40 970,40 995,40 1020,40 1045,40 1070,40
+          1095,40 1120,40 1145,40 1170,40 1200,40
+        "/>
+      </svg>
+      <span class="seismo-label">Ondas sísmicas — 24.06.2026</span>
+    </div>
+
+    <div class="stat-row reveal stagger-children">
+      <div class="stat"><span class="num red">7.5</span><span class="label">Magnitud máxima</span></div>
+      <div class="stat"><span class="num">39<small style="font-size:13px;font-weight:400;">seg</small></span><span class="label">Entre ambos sismos</span></div>
+      <div class="stat"><span class="num">9</span><span class="label">Estados en emergencia</span></div>
+      <div class="stat"><span class="num">16+</span><span class="label">Países enviando ayuda</span></div>
+    </div>
+    <p class="figures-note">Las cifras de víctimas y daños se actualizan hora a hora. Consulta Protección Civil Venezuela para datos oficiales en tiempo real.</p>
+  </div>
+</header>
+
+<!-- EARTHQUAKE METER -->
+<section class="quake-meter-section">
+  <div class="wrap">
+    <div class="kicker reveal">
+      <span class="tag" style="background:var(--alert);">MAGNITUD</span>
+      <h2 style="color:var(--paper);">Lo que significan estos números</h2>
+    </div>
+    <div class="meter-grid">
+      <!-- Richter dial -->
+      <div class="richter-dial reveal">
+        <svg viewBox="0 0 300 300" aria-hidden="true">
+          <defs>
+            <linearGradient id="dialGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#1E6640"/>
+              <stop offset="40%" stop-color="#C9902A"/>
+              <stop offset="80%" stop-color="#D12020"/>
+              <stop offset="100%" stop-color="#FF1A1A"/>
+            </linearGradient>
+          </defs>
+          <!-- Track -->
+          <path d="M 40 210 A 130 130 0 0 1 260 210" fill="none" stroke="rgba(255,255,255,.1)" stroke-width="18" stroke-linecap="round"/>
+          <!-- Colored arc -->
+          <path d="M 40 210 A 130 130 0 0 1 260 210" fill="none" stroke="url(#dialGrad)" stroke-width="18" stroke-linecap="round" opacity=".85"/>
+          <!-- Tick marks -->
+          <g stroke="rgba(255,255,255,.25)" stroke-width="1.5">
+            <line x1="150" y1="80" x2="150" y2="95" transform="rotate(-90,150,210)"/>
+            <line x1="150" y1="80" x2="150" y2="90" transform="rotate(-72,150,210)"/>
+            <line x1="150" y1="80" x2="150" y2="90" transform="rotate(-54,150,210)"/>
+            <line x1="150" y1="80" x2="150" y2="90" transform="rotate(-36,150,210)"/>
+            <line x1="150" y1="80" x2="150" y2="90" transform="rotate(-18,150,210)"/>
+            <line x1="150" y1="80" x2="150" y2="95" transform="rotate(0,150,210)"/>
+            <line x1="150" y1="80" x2="150" y2="90" transform="rotate(18,150,210)"/>
+            <line x1="150" y1="80" x2="150" y2="90" transform="rotate(36,150,210)"/>
+            <line x1="150" y1="80" x2="150" y2="90" transform="rotate(54,150,210)"/>
+            <line x1="150" y1="80" x2="150" y2="90" transform="rotate(72,150,210)"/>
+            <line x1="150" y1="80" x2="150" y2="95" transform="rotate(90,150,210)"/>
+          </g>
+          <!-- Labels -->
+          <text x="36" y="230" fill="rgba(255,255,255,.4)" font-size="11" font-family="Archivo" text-anchor="middle">0</text>
+          <text x="80" y="115" fill="rgba(255,255,255,.4)" font-size="11" font-family="Archivo" text-anchor="middle">2</text>
+          <text x="150" y="82" fill="rgba(255,255,255,.4)" font-size="11" font-family="Archivo" text-anchor="middle">5</text>
+          <text x="222" y="115" fill="rgba(255,255,255,.4)" font-size="11" font-family="Archivo" text-anchor="middle">8</text>
+          <text x="264" y="230" fill="rgba(255,255,255,.4)" font-size="11" font-family="Archivo" text-anchor="middle">10</text>
+          <!-- Needle -->
+          <g class="dial-needle">
+            <line x1="150" y1="210" x2="150" y2="100" stroke="white" stroke-width="3" stroke-linecap="round" opacity=".95"/>
+            <circle cx="150" cy="210" r="8" fill="white" opacity=".9"/>
+            <circle cx="150" cy="210" r="4" fill="#D12020"/>
+          </g>
+        </svg>
+        <div class="dial-value">7.5<span class="dial-unit">Mw</span></div>
+      </div>
+
+      <!-- Timeline -->
+      <div class="timeline reveal">
+        <div class="tl-item">
+          <div class="tl-time">21:47<br>local</div>
+          <div class="tl-text">
+            <strong>Primer sismo — Magnitud 7.2</strong>
+            <span>Epicentro cerca de San Felipe, Yaracuy. Sintió en Caracas, Aragua, Carabobo y La Guaira en segundos.</span>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-time">+39 seg</div>
+          <div class="tl-text">
+            <strong>Segundo sismo — Magnitud 7.5</strong>
+            <span>Epicentro al sureste de Yumare. El doblete dejó a millones sin saber qué venía después.</span>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-time">Noche</div>
+          <div class="tl-text">
+            <strong>Réplicas contínuas</strong>
+            <span>Decenas de réplicas entre M4 y M5.5. Miles de familias pasaron la noche en calles y parques.</span>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-time">Madrugada</div>
+          <div class="tl-text">
+            <strong>Colapso del aeropuerto de Maiquetía</strong>
+            <span>Daños estructurales graves en terminal internacional. Vuelos desviados a Maracaibo y Valencia.</span>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-time">25 jun</div>
+          <div class="tl-text">
+            <strong>Declaración de Emergencia Nacional</strong>
+            <span>9 estados declarados en emergencia. Llegada de primeras brigadas internacionales al país.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Live counters -->
+    <div class="live-counter-bar reveal">
+      <div class="lc-cell">
+        <span class="lc-num" id="cnt-victims">—</span>
+        <span class="lc-label">Personas afectadas</span>
+      </div>
+      <div class="lc-cell">
+        <span class="lc-num" id="cnt-teams">16+</span>
+        <span class="lc-label">Países con equipos</span>
+      </div>
+      <div class="lc-cell">
+        <span class="lc-num" id="cnt-hours">72+</span>
+        <span class="lc-label">Horas de emergencia</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT HAPPENED -->
+<section class="what-happened rule-top">
+  <div class="wrap">
+    <div class="kicker reveal"><span class="tag">QUÉ PASÓ</span><h2>Un doblete sísmico sin precedentes recientes</h2></div>
+    <p class="lede reveal">La noche del miércoles, durante el feriado de la batalla de Carabobo, dos sismos golpearon casi en simultáneo el centro-norte de Venezuela. Caracas, La Guaira, Aragua, Carabobo y Miranda están entre las zonas más golpeadas.</p>
+    <p class="reveal">Edificios colapsaron en barrios como Los Palos Grandes. El Aeropuerto Internacional de Maiquetía sufrió daños estructurales graves. Los hospitales —ya debilitados por años de crisis— se desbordaron con salas improvisadas en pasillos y calles.</p>
+    <blockquote class="reveal">"Tienen sus mochilas y no pueden moverse." — Coordinadora médica de Médicos Sin Fronteras en Venezuela, sobre familias que aún esperan noticias de sus seres queridos.</blockquote>
+
+    <!-- Affected states visual -->
+    <div class="affected-visual reveal">
+      <div class="affected-states">
+        <p style="font-size:12px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;">Nivel de afectación por estado</p>
+        <div class="state-bar-wrap">
+          <div class="state-name">Yaracuy <span>Epicentro</span></div>
+          <div class="state-bar"><div class="state-fill" data-w="96%"></div></div>
+        </div>
+        <div class="state-bar-wrap">
+          <div class="state-name">La Guaira <span>Crítico</span></div>
+          <div class="state-bar"><div class="state-fill" data-w="88%"></div></div>
+        </div>
+        <div class="state-bar-wrap">
+          <div class="state-name">Caracas (D.C.) <span>Crítico</span></div>
+          <div class="state-bar"><div class="state-fill" data-w="82%"></div></div>
+        </div>
+        <div class="state-bar-wrap">
+          <div class="state-name">Carabobo <span>Grave</span></div>
+          <div class="state-bar"><div class="state-fill gold" data-w="70%"></div></div>
+        </div>
+        <div class="state-bar-wrap">
+          <div class="state-name">Aragua <span>Grave</span></div>
+          <div class="state-bar"><div class="state-fill gold" data-w="65%"></div></div>
+        </div>
+        <div class="state-bar-wrap">
+          <div class="state-name">Miranda <span>Moderado</span></div>
+          <div class="state-bar"><div class="state-fill rubble" data-w="48%"></div></div>
+        </div>
+      </div>
+      <div class="epicenter-box">
+        <span class="epicenter-icon">🌐</span>
+        <span class="epicenter-label">San Felipe, Yaracuy</span>
+        <span class="epicenter-sub">Epicentro principal — 7.2 Mw</span>
+        <span class="epicenter-sub" style="margin-top:8px;display:block;color:var(--alert-dark);font-weight:700;">Profundidad: 12 km</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT THEY NEED -->
+<section class="needs-section">
+  <div class="wrap">
+    <div class="kicker reveal"><span class="tag">QUÉ NECESITAN</span><h2>Lo que falta en el terreno ahora mismo</h2></div>
+    <p class="lede reveal">Desde Colombia organizamos el envío de ayuda humanitaria a través de empresa de transporte verificada. Cada artículo que recolectemos puede cambiarle la vida a una familia venezolana.</p>
+
+    <div class="needs-grid">
+      <div class="need-card">
+        <span class="need-icon">👗</span>
+        <span class="need-name">Ropa y abrigo</span>
+        <span class="need-desc">Familias durmiendo a la intemperie. Ropa para adultos, niños, cobijas y pañales para bebés.</span>
+        <span class="need-urgency">⚡ Urgencia alta</span>
+      </div>
+      <div class="need-card">
+        <span class="need-icon">💊</span>
+        <span class="need-name">Medicamentos</span>
+        <span class="need-desc">Antibióticos, analgésicos, materiales de curación, sueros y medicamentos para enfermedades crónicas.</span>
+        <span class="need-urgency">⚡ Urgencia crítica</span>
+      </div>
+      <div class="need-card">
+        <span class="need-icon">🍞</span>
+        <span class="need-name">Alimentos no perecederos</span>
+        <span class="need-desc">Arroz, frijoles, enlatados, leche en polvo, galletas y comida para bebés y niños.</span>
+        <span class="need-urgency">⚡ Urgencia alta</span>
+      </div>
+      <div class="need-card">
+        <span class="need-icon">💧</span>
+        <span class="need-name">Agua potable</span>
+        <span class="need-desc">Bidones, pastillas purificadoras y botellas selladas para familias sin acceso a agua limpia.</span>
+        <span class="need-urgency">⚡ Urgencia crítica</span>
+      </div>
+      <div class="need-card">
+        <span class="need-icon">🏠</span>
+        <span class="need-name">Artículos del hogar</span>
+        <span class="need-desc">Colchonetas, carpas, linternas con pilas, kits de higiene y utensilios de cocina básicos.</span>
+        <span class="need-urgency">⚡ Urgencia media</span>
+      </div>
+      <div class="need-card">
+        <span class="need-icon">🧒</span>
+        <span class="need-name">Apoyo para niños</span>
+        <span class="need-desc">Pañales, ropa infantil, teteros, comida para bebé y materiales de estimulación infantil.</span>
+        <span class="need-urgency">⚡ Urgencia alta</span>
+      </div>
+    </div>
+
+    <!-- Collection progress -->
+    <div class="collection-bar-wrap reveal">
+      <div class="cb-header">
+        <span class="cb-title">🎯 Meta de recolección — Primer envío</span>
+        <span class="cb-pct" id="cb-pct">0%</span>
+      </div>
+      <div class="cb-track"><div class="cb-fill" id="cb-fill"></div></div>
+      <div class="cb-labels">
+        <span>$0 COP</span>
+        <span>Meta: $5.000.000 COP</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DONATE NEQUI -->
+<section class="donate-section rule-top" id="donar">
+  <div class="wrap">
+    <div class="donate-inner">
+      <div class="donate-left">
+        <div class="kicker reveal">
+          <span class="tag" style="background:var(--nequi);color:white;">DONAR AHORA</span>
+          <h2>Envía tu apoyo en segundos</h2>
+        </div>
+        <p class="lede reveal">Con tu donación, compramos ropa, medicinas, alimentos y artículos esenciales para enviarlos directamente a Venezuela. No importa el monto — cada peso suma.</p>
+
+        <div class="donate-steps reveal">
+          <div class="donate-step">
+            <span class="step-num">01</span>
+            <div class="step-text">
+              <strong>Abre tu app de Nequi</strong>
+              <span>Ingresa desde tu celular. Si no tienes cuenta, puedes crearla gratis en minutos desde cualquier banco colombiano.</span>
+            </div>
+          </div>
+          <div class="donate-step">
+            <span class="step-num">02</span>
+            <div class="step-text">
+              <strong>Toca "Enviar dinero"</strong>
+              <span>Elige el monto que deseas donar. Cualquier cantidad, desde $1.000 COP, ayuda a una familia venezolana.</span>
+            </div>
+          </div>
+          <div class="donate-step">
+            <span class="step-num">03</span>
+            <div class="step-text">
+              <strong>Copia el número de Nequi</strong>
+              <span>Usa el botón en la tarjeta morada. Confirma el nombre del titular antes de enviar.</span>
+            </div>
+          </div>
+          <div class="donate-step">
+            <span class="step-num">04</span>
+            <div class="step-text">
+              <strong>Guarda el comprobante</strong>
+              <span>Toma pantalla de la confirmación. Lo pediremos para el registro oficial de donantes de la Alcaldía.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- NEQUI CARD -->
+      <div class="reveal">
+        <div class="nequi-card" role="region" aria-label="Tarjeta de donación Nequi">
+          <div class="nequi-top">
+            <div class="nequi-badge">💜</div>
+            <span class="nequi-wordmark">Nequi</span>
+            <span class="nequi-chip">Donaciones</span>
+          </div>
+
+          <div class="nequi-label">Número al cual pueden donar para mandar apoyos a Venezuela</div>
+          <div class="nequi-holder">Colecta Humanitaria Venezuela 2026</div>
+          <div class="nequi-number" id="nequi-num">300 000 0000</div>
+
+          <div class="nequi-actions">
+            <button class="nequi-btn" onclick="copyNequi()" aria-label="Copiar número">
+              📋 Copiar número
+            </button>
+            <span class="copy-ok" id="copy-ok">✅ ¡Copiado!</span>
+          </div>
+
+          <hr class="nequi-hr">
+
+          <div class="nequi-pills-label">Recibimos con amor y enviamos con compromiso</div>
+          <div class="nequi-pills">
+            <span class="pill">👗 Ropa</span>
+            <span class="pill">💊 Medicinas</span>
+            <span class="pill">🍞 Alimentos</span>
+            <span class="pill">💧 Agua</span>
+            <span class="pill">🏠 Hogar</span>
+            <span class="pill">🧒 Niños</span>
+          </div>
+
+          <span class="nequi-heart" aria-hidden="true">❤️</span>
+        </div>
+        <p class="nequi-footer-note">Los recursos recolectados se destinan exclusivamente a la compra y envío de ayuda humanitaria hacia Venezuela a través de empresa de transporte verificada. Se publicará informe de uso de fondos con aval de la Alcaldía.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WAVE DIVIDER -->
+<div class="wave-div" aria-hidden="true">
+  <div class="wb"></div><div class="wb"></div><div class="wb"></div>
+  <div class="wb"></div><div class="wb"></div><div class="wb"></div>
+  <div class="wb"></div><div class="wb"></div><div class="wb"></div>
+  <div class="wb"></div><div class="wb"></div>
+</div>
+
+<!-- ORGANIZATIONS -->
+<section class="help-section">
+  <div class="wrap">
+    <div class="kicker reveal"><span class="tag">ORGANIZACIONES</span><h2>Canales humanitarios verificados</h2></div>
+    <p class="lede reveal">Si prefieres canalizar tu apoyo a través de organizaciones internacionales verificadas, estas son las más activas en Venezuela en este momento:</p>
+    <div class="help-grid reveal stagger-children">
+      <div class="org-card">
+        <span class="org-name">🔴 Cruz Roja Venezolana / Internacional</span>
+        <span class="org-desc">Coordina búsqueda y rescate, albergues de emergencia, agua segura y atención médica urgente sobre el terreno en las zonas más afectadas.</span>
+        <a class="org-cta" href="https://www.cruzroja.org" target="_blank" rel="noopener">cruzroja.org →</a>
+      </div>
+      <div class="org-card">
+        <span class="org-name">🏥 Médicos Sin Fronteras</span>
+        <span class="org-desc">Ya desplegados en zonas afectadas. Brindando atención médica de emergencia, cirugías y apoyo psicosocial a comunidades golpeadas.</span>
+        <a class="org-cta" href="https://www.msf.org" target="_blank" rel="noopener">msf.org →</a>
+      </div>
+      <div class="org-card">
+        <span class="org-name">🌍 GlobalGiving — Venezuela Relief</span>
+        <span class="org-desc">Canaliza donaciones hacia organizaciones locales verificadas que entregan alimentos, agua, refugio y atención médica donde más se necesita.</span>
+        <a class="org-cta" href="https://www.globalgiving.org" target="_blank" rel="noopener">globalgiving.org →</a>
+      </div>
+      <div class="org-card">
+        <span class="org-name">🇨🇴 Cruz Roja Colombiana</span>
+        <span class="org-desc">Misión humanitaria #ContigoVenezuela: apoyo en salud, salud mental, búsqueda, rescate y protección de vínculos familiares.</span>
+        <a class="org-cta" href="https://www.cruzrojacolombiana.org" target="_blank" rel="noopener">cruzrojacolombiana.org →</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="gallery-section rule-top">
+  <div class="wrap">
+    <div class="kicker reveal"><span class="tag">GALERÍA</span><h2>Lo que está dejando el sismo</h2></div>
+    <p class="lede reveal" style="margin-bottom:clamp(20px,3vw,36px);">Espacios reservados para fotografía verificada. Reemplaza cada bloque con imágenes reales y sus créditos de fuente original.</p>
+    <div class="gallery-grid reveal">
+      <div class="photo-slot wide">
+        <span class="photo-icon">📷</span>
+        <span class="photo-instruction">Insertar foto principal — crédito obligatorio</span>
+        <span class="photo-caption">Edificio parcialmente colapsado en Los Palos Grandes, Caracas, tras el sismo del 24 de junio.</span>
+      </div>
+      <div class="photo-slot">
+        <span class="photo-icon">📷</span>
+        <span class="photo-instruction">Insertar foto — crédito obligatorio</span>
+        <span class="photo-caption">Equipos de rescate entre los escombros en La Guaira.</span>
+      </div>
+      <div class="photo-slot">
+        <span class="photo-icon">📷</span>
+        <span class="photo-instruction">Insertar foto — crédito obligatorio</span>
+        <span class="photo-caption">Familias venezolanas a la intemperie por temor a las réplicas.</span>
+      </div>
+      <div class="photo-slot">
+        <span class="photo-icon">📷</span>
+        <span class="photo-instruction">Insertar foto — crédito obligatorio</span>
+        <span class="photo-caption">Daños estructurales en el Aeropuerto Internacional de Maiquetía.</span>
+      </div>
+      <div class="photo-slot">
+        <span class="photo-icon">📷</span>
+        <span class="photo-instruction">Insertar foto — crédito obligatorio</span>
+        <span class="photo-caption">Brigadas internacionales de búsqueda y rescate llegando al país.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SAFETY -->
+<section class="safety-section rule-top">
+  <div class="wrap">
+    <div class="kicker reveal"><span class="tag">SEGURIDAD</span><h2>Ante posibles réplicas</h2></div>
+    <p class="lede reveal">Las réplicas pueden continuar durante días o semanas tras un sismo de esta magnitud. Mantente alerta y comparte esta información.</p>
+    <div class="safety-grid reveal stagger-children">
+      <div class="safety-card">
+        <span class="safety-ico">01</span>
+        <div><strong>Identifica zonas seguras</strong><p>Lejos de ventanas, espejos y muebles altos dentro de tu vivienda.</p></div>
+      </div>
+      <div class="safety-card">
+        <span class="safety-ico">02</span>
+        <div><strong>Mochila de emergencia</strong><p>Agua, documentos, linterna y medicamentos esenciales, siempre a la mano.</p></div>
+      </div>
+      <div class="safety-card">
+        <span class="safety-ico">03</span>
+        <div><strong>No regreses a edificios dañados</strong><p>Aunque parezcan estables, espera la evaluación de un experto antes de entrar.</p></div>
+      </div>
+      <div class="safety-card">
+        <span class="safety-ico">04</span>
+        <div><strong>Al sentir un temblor</strong><p>Agáchate, cúbrete la cabeza y aléjate de ventanas y objetos que puedan caer.</p></div>
+      </div>
+      <div class="safety-card">
+        <span class="safety-ico">05</span>
+        <div><strong>Teléfono siempre cargado</strong><p>Comparte tu ubicación con un familiar de confianza en todo momento.</p></div>
+      </div>
+      <div class="safety-card">
+        <span class="safety-ico">06</span>
+        <div><strong>Solo fuentes oficiales</strong><p>Protección Civil Venezuela y autoridades locales — evita la desinformación.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="footer-closing reveal">Venezuela se levanta <span class="accent">junto a quienes la acompañan.</span></div>
+    <p class="sub-line reveal" style="margin-top:12px;">La solidaridad de hoy es la reconstrucción de mañana.</p>
+    <div class="credits reveal">
+      <span>❤️</span> Campaña humanitaria — Barrancabermeja, Santander, Colombia
+    </div>
+    <p class="fine reveal">Página informativa — verifica cifras y campañas de donación contra fuentes oficiales antes de difundir. Las cifras de víctimas se actualizan constantemente.</p>
+    <a href="#" class="back-top reveal">↑ Volver al inicio</a>
+  </div>
+</footer>
+
+<script>
+/* ─── QUAKE ON LOAD ─── */
+window.addEventListener('DOMContentLoaded', function(){
+  var h = document.getElementById('site-header');
+  if(h){ setTimeout(function(){ h.classList.add('quake-active'); },120); }
+
+  // Animate state bars
+  setTimeout(function(){
+    document.querySelectorAll('.state-fill').forEach(function(el){
+      el.style.width = el.getAttribute('data-w') || '0%';
+    });
+  }, 800);
+
+  // Animate collection bar
+  setTimeout(function(){
+    var fill = document.getElementById('cb-fill');
+    var pct = document.getElementById('cb-pct');
+    if(fill){ fill.style.width='34%'; }
+    if(pct){ pct.textContent='34%'; }
+  }, 1200);
+
+  // Animate victims counter
+  animateNum('cnt-victims', 0, 147000, 2800, function(n){
+    return n.toLocaleString('es-CO')+'+'
+  });
+});
+
+/* ─── SCROLL REVEAL ─── */
+var revealEls = document.querySelectorAll('.reveal,.reveal-fast');
+if('IntersectionObserver' in window){
+  var obs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        e.target.classList.add('in');
+        obs.unobserve(e.target);
+        // Animate bars inside this element
+        e.target.querySelectorAll('.state-fill').forEach(function(bar){
+          bar.style.width = bar.getAttribute('data-w') || '0%';
+        });
+      }
+    });
+  },{threshold:0.1,rootMargin:'0px 0px -32px 0px'});
+  revealEls.forEach(function(el){ obs.observe(el); });
+} else {
+  revealEls.forEach(function(el){ el.classList.add('in'); });
+}
+
+/* ─── NEED CARDS STAGGER ─── */
+var needCards = document.querySelectorAll('.need-card');
+if('IntersectionObserver' in window){
+  var nobs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        e.target.classList.add('in');
+        nobs.unobserve(e.target);
+      }
+    });
+  },{threshold:.08});
+  needCards.forEach(function(c,i){
+    c.style.transitionDelay = (i*.09)+'s';
+    nobs.observe(c);
+  });
+} else {
+  needCards.forEach(function(c){ c.style.opacity='1'; });
+}
+
+/* ─── STICKY CTA ─── */
+var stickyCta = document.getElementById('sticky-cta');
+window.addEventListener('scroll', function(){
+  if(window.scrollY > 500){ stickyCta.classList.add('show'); }
+  else { stickyCta.classList.remove('show'); }
+}, {passive:true});
+
+/* ─── COPY NEQUI ─── */
+function copyNequi(){
+  var raw = document.getElementById('nequi-num').textContent.replace(/\s/g,'');
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(raw).then(showOk).catch(function(){ fallback(raw); });
+  } else { fallback(raw); }
+}
+function fallback(t){
+  var ta=document.createElement('textarea');
+  ta.value=t; ta.style.cssText='position:fixed;opacity:0;';
+  document.body.appendChild(ta); ta.focus(); ta.select();
+  try{ document.execCommand('copy'); showOk(); }catch(e){}
+  document.body.removeChild(ta);
+}
+function showOk(){
+  var el=document.getElementById('copy-ok');
+  el.classList.add('show');
+  setTimeout(function(){ el.classList.remove('show'); },2600);
+}
+
+/* ─── ANIMATE NUMBER ─── */
+function animateNum(id, from, to, duration, fmt){
+  var el=document.getElementById(id); if(!el) return;
+  var start=null;
+  function step(ts){
+    if(!start) start=ts;
+    var p=Math.min((ts-start)/duration,1);
+    var ease=1-Math.pow(1-p,4);
+    var val=Math.round(from+(to-from)*ease);
+    el.textContent=fmt ? fmt(val) : val;
+    if(p<1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+/* ─── HOUR COUNTER ─── */
+(function(){
+  var el=document.getElementById('cnt-hours');
+  if(!el) return;
+  var quake=new Date('2026-06-24T21:47:00-04:00');
+  function update(){
+    var diff=Math.floor((Date.now()-quake)/3600000);
+    el.textContent=(diff>0 ? diff : '72')+'h';
+  }
+  update(); setInterval(update,60000);
+})();
+
+/* ─── RANDOM QUAKE SHAKE (subtle, every 45s) ─── */
+(function(){
+  function triggerShake(){
+    var h=document.getElementById('site-header');
+    if(!h) return;
+    h.classList.remove('quake-active');
+    void h.offsetWidth; // reflow
+    h.classList.add('quake-active');
+  }
+  setInterval(triggerShake, 45000);
+})();
+</script>
+</body>
+</html>
